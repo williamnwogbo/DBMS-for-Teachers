@@ -1,6 +1,9 @@
 @extends('layouts.admin')
 @section('style')
     <link href="{{ url('css/form.css') }}" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="{{ url('assets/bootstrap-datepicker/css/datepicker.css') }}" />
+    <!-- date range picker -->
+    <link rel="stylesheet" type="text/css" href="{{ url('assets/bootstrap-daterangepicker/daterangepicker.css') }}" />
     @stop
 
 @section('content')
@@ -27,11 +30,11 @@
                                             </div>
                                             <div class="stepwizard-step">
                                                 <a href="#step-2" type="button" class="btn btn-default btn-circle" disabled="disabled">2</a>
-                                                <p>Step 2</p>
+                                                <p>Status</p>
                                             </div>
                                             <div class="stepwizard-step">
                                                 <a href="#step-3" type="button" class="btn btn-default btn-circle" disabled="disabled">3</a>
-                                                <p>Step 3</p>
+                                                <p>Coordination</p>
                                             </div>
                                         </div>
                                     </div>
@@ -45,48 +48,48 @@
                                                         <div class="row-fluid">
                                                             <div class="col-lg-4 col_l">
                                                                 <label class="control-label">Title</label>
-                                                                <input  maxlength="100" type="text" name="title" value="{{ old('title') }}" required="required" class="form-control" placeholder="Title"  />
+                                                                <input   type="text" name="title" value="{{ old('title') }}"  class="form-control" placeholder="Title"  />
                                                             </div>
 
                                                             <div class="col-lg-4 col_l">
                                                                 <label class="control-label">Surname</label>
-                                                                <input  maxlength="100" type="text" name="surname" value="{{ old('surname') }}" required="required" class="form-control"/>
+                                                                <input   type="text" name="surname" value="{{ old('surname') }}"  class="form-control"/>
                                                             </div>
                                                             <div class="col-lg-4 col_r">
                                                                 <label class="control-label">Other names</label>
-                                                                <input  maxlength="100" type="text" name="othernames" value="{{ old('othernames') }}" required="required" class="form-control" />
+                                                                <input   type="text" name="othernames" value="{{ old('othernames') }}"  class="form-control" />
                                                             </div>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="control-label">TSC File No</label>
-                                                        <input maxlength="100" type="text" required="required" name="tsc_file_no" value="{{ old('tsc_file_no') }}" class="form-control" />
+                                                        <input  type="text"  name="tsc_file_no" value="{{ old('tsc_file_no') }}" class="form-control" />
                                                     </div>
 
                                                     <div class="form-group">
                                                         <label class="control-label">OG File No</label>
-                                                        <input maxlength="100" type="text" required="required" name="og_file_no" value="{{ old('og_file_no') }}" class="form-control" />
+                                                        <input  type="text"  name="og_file_no" value="{{ old('og_file_no') }}" class="form-control" />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Date of Birth</label>
-                                                        <input maxlength="100" type="text" required="required" name="date_of_birth" value="{{ old('date_of_birth') }}" class="form-control"/>
+                                                        <input  type="text"  name="date_of_birth" value="{{ old('date_of_birth') }}" class="form-control"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Email</label>
-                                                        <input maxlength="100" type="text" required="required" name="email" value="{{ old('email') }}" class="form-control"  />
+                                                        <input  type="text"  name="email" value="{{ old('email') }}" class="form-control"  />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Phone number</label>
-                                                        <input maxlength="100" type="text" required="required" name="phone_no" value="{{ old('phone_no') }}" class="form-control"  />
+                                                        <input  type="text"  name="phone_no" value="{{ old('phone_no') }}" class="form-control"  />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Nationality</label>
-                                                        <input maxlength="100" type="text" required="required" name="country_id" value="{{ old('country_id') }}" class="form-control"  />
+                                                        <input  type="text"  name="country_id" value="{{ old('country_id') }}" class="form-control"  />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">State of Origin</label>
-                                                        {!! Form::select('state_id',$states,'',['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+                                                        {!! Form::select('state_id',['Select a State'] + $states->toArray(),'',['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
                                                      </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Local Government of Origin</label>
@@ -96,7 +99,7 @@
                                                      </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Ward of Origin</label>
-                                                        <input maxlength="100" type="text"  name="ward" value="{{ old('ward') }}" class="form-control"/>
+                                                        <input  type="text"  name="ward" value="{{ old('ward') }}" class="form-control"/>
                                                     </div>
                                                     <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
                                                 </div>
@@ -107,38 +110,97 @@
                                                 <div class="col-md-12">
                                                     <h3> Status</h3>
 
-                                                    <div class="col-md-12">
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-12 col_l" >
+                                                    <div class="col-md-4 col_l">
                                                         <div class="form-group">
                                                             <label class="control-label">Professional Status</label>
-                                                            <input maxlength="200" type="text" required="required" name="professional_status" class="form-control"  />
-                                                        </div>
+                                                            <!- So this data is static doesn't changes so there isn't a need to add it in the controller -->
+                                                           <?php
+                                                                $status = ["" => 'Select a professional Status','Professional','Non Professional'];
+                                                            ?>
+                                                            {!! Form::select('professional_status',$status,'',['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+
+                                                           </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="control-label">Qualification</label>
-                                                            <input maxlength="200" type="text" name="qualification"   required="required" class="form-control"  />
+                                                            <input name="qualification" type="text" value="{{ old('qualification') }}"    class="form-control"  />
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <div class="form-group">
-                                                            <label class="control-label">Subject of Specialization</label>
-                                                            <input maxlength="200" type="text" name="qualification"   required="required" class="form-control"  />
+                                                        <div class="col-md-4 col_r">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Year</label>
+                                                                <input name="year" type="text" value="{{ old('year') }}" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  class="form-control"  />
+                                                            </div>
                                                         </div>
-                                                    </div>
+
                                                         </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">Company Address</label>
-                                                        <input maxlength="200" type="text" required="required" class="form-control" placeholder="Enter Company Address"  />
+                                                        <label class="control-label">Subject of Specialization</label>
+                                                        {!! Form::select('subject_of_specialisation',$subjects,old('subject_of_specialisation'),['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+
                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Staff Classification</label>
+                                                        <?php
+                                                        $classifications = ["" => 'Select Staff Classification','Teaching','Non Teaching'];
+                                                        ?>
+                                                        {!! Form::select('classifications',$classifications,'',['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+
+                                                     </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Post Held</label>
+                                                        <input type="text" value="{{ old('post_held') }}" name="post_held" class="form-control"  />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label col-sm-12 col_l">Date of 1st Appointment in Ogun State</label>
+                                                        <div class="col-sm-12 col_l col_r">
+                                                            <input id="dp1" type="text" value="{{ old('appointment') }}" size="16" name="appointment" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label class="control-label">Date of Last Promotion</label>
+                                                        <input type="text" value="{{ old('last_promotion') }}" id="dp2" name="last_promotion" class="form-control "/>
+                                                    </div>
+
                                                     <button class="btn btn-primary nextBtn btn-lg pull-right" type="button" >Next</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="row setup-content" id="step-3">
-                                            <div class="col-xs-6 col-md-offset-3">
+                                            <div class="col-xs-6 col-md-offset-2 form-change">
                                                 <div class="col-md-12">
-                                                    <h3> Step 3</h3>
+                                                    <h3>COORDINATION: <a href="javascript:;" onclick="cloneRow()" class="btn btn-primary pull-right"><i class="icon icon_plus"></i></a></h3>
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                        <th>Name of School</th>
+                                                        <th style="width: 150px;">Subject</th>
+                                                        <th>Designation while in school</th>
+                                                        <th>Last Grade Level in School</th>
+                                                        <th colspan="2">Date Posted</th>
+                                                        </thead>
+                                                        <tbody class="table_append">
+                                                        <tr class="first_data">
+                                                            <td><input type="text" class="form-control" name="school"></td>
+                                                            <td> {!! Form::select('subject_id[]',$subjects,"",['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+                                                            </td>
+                                                            <td><input type="text" class="form-control" name="designation[]"></td>
+                                                            <td><input type="text" class="form-control" name="grade_level[]"></td>
+                                                            <td><input id="dp3" type="text" value="{{ old('appointment') }}" size="16" name="from[]" class="form-control">
+                                                            </td>
+                                                            <td><input id="dp4" type="text" value="{{ old('appointment') }}" size="16" name="to[]" class="form-control">
+                                                            </td>
+
+                                                        </tr>
+
+                                                        </tbody>
+
+                                                    </table>
+
+
+
                                                     <button class="btn btn-success btn-lg pull-right" type="submit">Submit</button>
                                                 </div>
                                             </div>
@@ -162,7 +224,16 @@
     <!--custome script for all page-->
     <script src="{{ url('/js/scripts.js') }}"></script>
     <script src="{{  url('/js/form-wizard.js') }}"></script>
+    <script type="text/javascript" src="{{ url('assets/bootstrap-datepicker/js/bootstrap-datepicker.js') }}"></script>
+    <script type="text/javascript" src="{{ url('assets/bootstrap-daterangepicker/date.js') }}"></script>
+    <script type="text/javascript" src="{{ url('assets/bootstrap-daterangepicker/daterangepicker.js') }}"></script>
+    <script src="{{ url('js/form-component.js') }}"></script>
     <script type="text/javascript">
+        function cloneRow(){
+                var $table_data = $('.first_data').clone();
+                $('.table_append').append($table_data);
+
+        }
         function getLocalGovt(){
                 var state_id = $('.state_id').val();
                 var  formData = "state_id="+ state_id;

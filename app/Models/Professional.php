@@ -9,7 +9,7 @@ class Professional extends Model {
      */
 
     protected $table = 'professionals';
-    protected $fillable = ['id', 'qualifications', 'year', 'subject_of_specialisation', 'subject_id', 'classifications', 'post_held', 'retirement', 'appointment', 'last_promotion', 'teacher_id', 'uploaded', 'online_id'];
+    protected $fillable = ['id', 'qualification', 'year', 'subject_of_specialisation', 'subject_id', 'classifications', 'post_held', 'retirement', 'appointment', 'last_promotion', 'teacher_id', 'uploaded', 'online_id'];
 
 
     public function subject() {

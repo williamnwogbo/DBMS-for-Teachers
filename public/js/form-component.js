@@ -59,10 +59,10 @@ var Script = function () {
     $(function() {
 
         // Tags Input
-        $(".tagsinput").tagsInput();
+        // $(".tagsinput").tagsInput();
 
         // Switch
-        $("[data-toggle='switch']").wrap('<div class="switch" />').parent().bootstrapSwitch();
+        // $("[data-toggle='switch']").wrap('<div class="switch" />').parent().bootstrapSwitch();
 
     });
 
@@ -70,10 +70,10 @@ var Script = function () {
 
     //color picker
 
-    $('.cp1').colorpicker({
-        format: 'hex'
-    });
-    $('.cp2').colorpicker();
+    // $('.cp1').colorpicker({
+    //     format: 'hex'
+    // });
+    // $('.cp2').colorpicker();
 
 
     //date picker
@@ -88,7 +88,7 @@ var Script = function () {
         });
         $('#dp2').datepicker();
         $('#dp3').datepicker();
-        $('#dp3').datepicker();
+        $('#dp4').datepicker();
         $('#dpYears').datepicker();
         $('#dpMonths').datepicker();
 

@@ -14,7 +14,8 @@ class AdminController extends Controller
     //logged in dashboard
     public function dashboard(){
         $states = State::pluck('name','id');
-        return view('admin.dashboard')->with(compact('states'));
+        $subjects = Subject::pluck('name','id');
+        return view('admin.dashboard')->with(compact('states','subjects'));
     }
 
     public function subject(){

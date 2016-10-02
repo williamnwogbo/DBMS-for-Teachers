@@ -139,6 +139,7 @@
 <!-- bootstrap -->
 <script src="{{ url('js/bootstrap.min.js') }}"></script>
 <!-- nice scroll -->
+
 <script src="{{ url('js/jquery.scrollTo.min.js') }}"></script>
 <script src="{{ url('js/jquery.nicescroll.js') }}" type="text/javascript"></script>
 <!-- charts scripts -->
@@ -146,15 +147,17 @@
 <script src="{{ url('js/owl.carousel.js') }}" ></script>
 <!-- jQuery full calendar -->
 <script src="{{ url('assets/fullcalendar/fullcalendar/fullcalendar.min.js') }}"></script>
+@yield('script')
 <!--script for this page only-->
-<script src="{{ url('js/calendar-custom.js') }}"></script>
+{{--<script src="{{ url('js/calendar-custom.js') }}"></script>--}}
 <!-- custom select -->
 <script src="{{ url('js/jquery.customSelect.min.js') }}" ></script>
+
 <!--custome script for all page-->
 <script src="{{ url('js/scripts.js') }}"></script>
 <!-- custom script for this page-->
 <script src="{{ url('js/sparkline-chart.js') }}"></script>
-@yield('script')
+
 <script>
 
 
