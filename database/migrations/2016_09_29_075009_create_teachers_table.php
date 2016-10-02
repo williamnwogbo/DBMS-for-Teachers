@@ -26,7 +26,7 @@ class CreateTeachersTable extends Migration {
 			$table->integer('country_id')->nullable();
 			$table->integer('state_id')->nullable()->index('fk_teachers_1_idx');
 			$table->integer('local_govt_id')->nullable()->index('fk_teachers_1_idx1');
-			$table->integer('ward_id')->nullable();
+			$table->string('ward')->nullable();
 			$table->enum('professional_status', array('1','2'))->nullable();
 			$table->timestamps();
 			$table->integer('online_id')->nullable();
