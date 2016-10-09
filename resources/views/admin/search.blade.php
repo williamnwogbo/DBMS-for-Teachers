@@ -9,10 +9,12 @@
                     <!--notification start-->
                     <section class="panel">
                         <header class="panel-heading">
-                            Subjects
+                           Search result for {{ $search_data }} Teachers
+                            <br/>
+                            <span>{{  count($teacher_data) }} result(s)</span>
                         </header>
                         <div class="panel-body">
-                            @if($teachers->count())
+                            @if(count($teacher_data))
                                 <table class="table table-bordered">
                                     <thead>
                                     <th>Full Name</th>
@@ -23,29 +25,27 @@
                                     <th style="width: 100px;">Action</th>
                                     </thead>
                                     <tbody>
-                                    @foreach($teachers as $teacher)
+                                    @foreach($teacher_data as $teacher)
                                         <tr>
-                                            <td>{{ ucwords($teacher->title." ".$teacher->surname ." ".$teacher->othernames) }}</td>
-                                            <td>{{ $teacher->tsc_file_no }}</td>
-                                            <td>{{ $teacher->og_file_no }}</td>
-                                            <td>{{ $teacher->email }}</td>
-                                            <td>{{ $teacher->phone_no }}</td>
+                                            <td>{{ ucwords($teacher['title']." ".$teacher['surname'] ." ".$teacher['othernames']) }}</td>
+                                            <td>{{ $teacher['tsc_file_no'] }}</td>
+                                            <td>{{ $teacher['og_file_no'] }}</td>
+                                            <td>{{ $teacher['email'] }}</td>
+                                            <td>{{ $teacher['phone_no'] }}</td>
                                             <td>
-                                                <a href="{{ url('/teacher/view/'.encrypt_decrypt('encrypt',$teacher->id)) }}" class="btn" style="float: left"><i class="icon_search"></i></a>
-                                                @if(auth()->user()->level == 1)
-                                                <a href="{{ url('/teacher/edit/'.encrypt_decrypt('encrypt',$teacher->id)) }}" class="btn" style="float: left"><i class="icon_pencil-edit"></i></a>
+                                                <a href="{{ url('/teacher/view/'.encrypt_decrypt('encrypt',$teacher['id'])) }}" class="btn" style="float: left"><i class="icon_search"></i></a>
+                                                @if(auth()->user()->level == "1")
+                                                <a href="{{ url('/teacher/edit/'.encrypt_decrypt('encrypt',$teacher['id'])) }}" class="btn" style="float: left"><i class="icon_pencil-edit"></i></a>
                                                 @endif
-
                                             </td>
                                         </tr>
                                     @endforeach
                                     </tbody>
                                 </table>
-                                {{ $teachers->render() }}
 
                             @else
                                 <div class="alert alert-info">
-                                    No subject has been added to the system
+                                    No Record found
                                 </div>
                             @endif
                         </div>

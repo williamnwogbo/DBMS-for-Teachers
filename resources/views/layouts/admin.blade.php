@@ -100,7 +100,7 @@
                     </a>
                 </li>
                 <li {{ (Request::is('search') ? 'class=active' : '') }}>
-                    <a href="{{ url('/search') }}" class="">
+                    <a href="javascript:;" data-toggle="modal" data-target="#search" class="">
                         <i class="icon_search"></i>
                         <span>Search</span>
                     </a>
@@ -117,14 +117,16 @@
                         <span>Subjects</span>
                     </a>
                 </li>
+                @if(auth()->user()->level == "1")
                 <li {{ (Request::is('account') ? 'class=active' : '') }}>
                     <a href="{{ url('/account') }}" class="">
                         <i class="icon_piechart"></i>
                         <span>Accounts</span>
                     </a>
                 </li>
+                @endif
                 <li  {{ (Request::is('backup') ? 'class=active' : '') }}>
-                    <a href="{{ url('/backup') }}" class="">
+                    <a href="#" data-toggle="modal" data-target="#pending" class="">
                         <i class="icon_document_alt"></i>
                         <span>Backup/Restore</span>
                     </a>
@@ -137,6 +139,54 @@
 
 @yield('content')
 </section>
+<div id="search" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search Data</h4>
+            </div>
+            <div class="modal-body">
+                @include('errors.showerrors')
+                <div class="alert alert-info">
+                    Search by Name,File No, Local Government,Sex,Grade Level,School,Religion and Subject Taught/Specialization
+                </div>
+                <form action="{{ url('/search') }}" method="post">
+                    <label>Search</label>
+                    <input type="text" name="search" class="form-control" required/><br/>
+                    <input type="submit" value="Search" class="btn pull-right btn-primary"/>
+                    <br/>
+                    <br/>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+<div id="pending" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Search Data</h4>
+            </div>
+            <div class="modal-body">
+                @include('errors.showerrors')
+                <div class="alert alert-info">
+                  Depends on server status
+                   </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>
 <!-- container section start -->
 <!-- javascripts -->
 <script src="{{ url('js/jquery.js') }}"></script>

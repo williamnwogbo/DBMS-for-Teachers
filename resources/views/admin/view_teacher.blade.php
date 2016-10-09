@@ -12,7 +12,12 @@
                                 <h4 class="text-left offset-0"> {{ $teacher->title." ".ucwords($teacher->surname." ".$teacher->othernames) }}</h4>
                                 <p class="text-left">Email: {{ $teacher->email }}</p>
                                 <p class="text-left">Phone: {{ $teacher->phone }} </p>
-
+                                @if(auth()->user()->level == "1")
+                                {{ Form::open(['method' => 'DELETE','style'=>'float:right', 'route' => 'subject.delete', $teacher->id]) }}
+                                {{ Form::hidden('id', $teacher->id) }}
+                                {{ Form::submit('Delete', ['class' => 'text-left btn btn-danger btn-xs']) }}
+                                {{ Form::close() }}
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -86,9 +91,11 @@
                                     <section class="panel">
 
                                         <div class="panel-body bio-graph-info">
-                                            <h1>Professional Profile  <span class="pull-right">
+                                            <h1>Professional Profile   @if(auth()->user()->level == "1")
+                                                    <span class="pull-right">
                                              <a href="#" data-toggle="modal" data-target="#addProfessional" class="pull-right btn btn-info"><i class="icon_plus"></i></a>
-                                         </span></h1>
+                                         </span>
+                                            @endif</h1>
 
                                             <div class="row">
                                                 @if($teacher->professionals->count() > 0)
@@ -101,7 +108,9 @@
                                                     <th>Position Held</th>
                                                     <th>Appointment</th>
                                                     <th>Last Promotion</th>
+                                                    @if(auth()->user()->level == 1)
                                                     <th>Action</th>
+                                                        @endif
                                                     </thead>
                                                     <tbody>
                                                         @foreach($teacher->professionals as $professional)
@@ -119,9 +128,11 @@
                                                                 <td> {{ $professional->post_held }}</td>
                                                                 <td> {{ Carbon\Carbon::parse($professional->appointment)->format('d M Y') }}</td>
                                                                 <td> {{ Carbon\Carbon::parse($professional->last_promotion)->format('d M Y') }}</td>
+                                                                @if(auth()->user()->level == "1")
                                                                 <td><a href="#" onclick="openEdit('{{ $professional->id }}','{{ $professional->qualification }}','{{ $professional->year }}','{{  $professional->subject_of_specification }}','{{ $professional->classification }}','{{ $professional->post_held }}','{{ $professional->appointment }}','{{ $professional->last_promotion }}')"><i class="icon_pencil-edit"></i></a>
                                                                  <a style="margin-left: 5px;margin-top: 4px;" href="javascript:;" onclick="confirmDelete('/professional/delete/{{ encrypt_decrypt('encrypt',$professional->id) }}')">    <i class="icon_blocked"></i></a>
                                                                 </td>
+                                                                    @endif
                                                             </tr>
                                                             @endforeach
                                                     </tbody>
@@ -140,9 +151,13 @@
                                     <section class="panel">
 
                                         <div class="panel-body bio-graph-info">
-                                            <h1>Coordination  <span class="pull-right">
+                                            <h1>Coordination
+                                                @if(auth()->user()->level == "1")
+                                                <span class="pull-right">
                                             <a href="javascript:;" onclick="cloneRow()" class="btn btn-primary pull-right"><i class="icon icon_plus"></i></a></a>
-                                         </span></h1>
+                                         </span>
+                                            @endif
+                                            </h1>
 
                                             <div class="row">
                                                 @if($teacher->professionals->count() > 0)
@@ -156,7 +171,9 @@
                                                         <th>Designation while in school</th>
                                                         <th>Last Grade Level in School</th>
                                                         <th colspan="2">Date Posted</th>
+                                                        @if(auth()->user()->level == "1")
                                                         <th colspan="2">Action</th>
+                                                            @endif
                                                         </thead>
                                                         <tbody class="table_append">
                                                         <!- we habe to add the same proportion of data that was save->
@@ -173,9 +190,11 @@
                                                                     </td>
                                                                     <td><input type="text" value="{{ $coordination->to }}" name="to[]" class="form-control dp4">
                                                                     </td>
+                                                                    @if(auth()->user()->level == "1")
                                                                     <td>
                                                                         <a href="javascript:;" onclick="confirmDelete('/cordination/delete/{{ encrypt_decrypt('encrypt',$coordination->id) }}')"><i  class="icon_blocked"></i></a>
                                                                     </td>
+                                                                        @endif
                                                                 </tr>
                                                             @endforeach
                                                         @endif
@@ -184,7 +203,10 @@
                                                         </tbody>
 
                                                     </table>
+
+                                                        @if(auth()->user()->level == "1")
                                                         <input type="submit" class=" btn btn-info pull-right"/>
+                                                            @endif
                                                     </form>
                                                 @else
                                                     <div class="alert alert-info">

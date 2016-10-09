@@ -35,6 +35,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('add/professional', 'TeachersController@addProfessional');
     Route::post('add/cordination', 'TeachersController@addCordination');
     Route::post('users/add', 'AccountController@addUser');
+    Route::post('search', 'SearchController@search');
     // we could use the for post and delete request point but since the app is going to be a desktop app we are safe to do this
     Route::get('professional/delete/{encrypted_id}', 'TeachersController@deleteProfessional');
     Route::get('cordination/delete/{encrypted_id}', 'TeachersController@deleteCordination');
