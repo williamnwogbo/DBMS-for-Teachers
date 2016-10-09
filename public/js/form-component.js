@@ -83,14 +83,21 @@ var Script = function () {
     }
     $(function(){
         window.prettyPrint && prettyPrint();
-        $('#dp1').datepicker({
-            format: 'mm-dd-yyyy'
-        });
+        $('#dp1').datepicker();
         $('#dp2').datepicker();
-        $('#dp3').datepicker();
-        $('#dp4').datepicker();
+        $('#dp7').datepicker();
+        $('#dp8').datepicker();
+        $('.dp3').datepicker();
+        $('.dp4').datepicker();
+        $('.dp5').datepicker();
         $('#dpYears').datepicker();
         $('#dpMonths').datepicker();
+        $('#dp4').datepicker({
+            format: 'yyyy-mm-dd'
+        });
+        $('#dp5').datepicker({
+            format: 'yyyy-mm-dd'
+        });
 
 
         var startDate = new Date(2012,1,20);

@@ -59,7 +59,7 @@
                 <li class="dropdown">
                     <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="profile-ava">
-                                <img alt="" src="img/avatar1_small.jpg">
+                                <img alt="" src="{{ url('img/avatar1_small.jpg') }}">
                             </span>
                         <span class="username">{{ Auth::user()->full_name }}</span>
                         <b class="caret"></b>
@@ -103,6 +103,12 @@
                     <a href="{{ url('/search') }}" class="">
                         <i class="icon_search"></i>
                         <span>Search</span>
+                    </a>
+                </li>
+                <li {{ (Request::is('teachers') ? 'class=active' : '') }}>
+                    <a href="{{ url('/teachers') }}" class="">
+                        <i class="icon_profile"></i>
+                        <span>Teachers</span>
                     </a>
                 </li>
                 <li  {{ (Request::is('subject') ? 'class=active' : '') }}>
@@ -160,7 +166,24 @@
 
 <script>
 
+    function confirmDelete(path){
+        if(confirm("Are you sure you want to delete this ?")){
+            window.location = path;
+        }
+    }
+    function cloneRow(){
+        //using localstorage to save count number
+        var count = localStorage.getItem('count');
+        if(!count){
+            count = 6;
+            localStorage.setItem('count',6);
+        }
+        var $table_data = '<tr class="first_data'+count+'"> <td><input type="text" class="form-control" name="school_info[]"></td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
 
+        $('.table_append').append($table_data);
+        count++;
+        localStorage.setItem('count',count);
+    }
 
     //carousel
     $(document).ready(function() {

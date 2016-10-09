@@ -39,8 +39,9 @@
                                         </div>
                                     </div>
 
-                                    <form role="form" action="" method="post">
+                                    <form role="form" action="{{ url('/teachers/add') }}" method="post">
                                         <div class="row setup-content" id="step-1">
+                                            @include('errors.showerrors')
                                             <div class="col-xs-6 col-md-offset-2 form-change">
                                                 <div class="col-md-12">
                                                     <h3> Step 1</h3>
@@ -73,7 +74,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Date of Birth</label>
-                                                        <input  type="text"  name="date_of_birth" value="{{ old('date_of_birth') }}" class="form-control"/>
+                                                        <input  type="text"  name="date_of_birth" id="dp5"  value="{{ old('date_of_birth') }}" class="form-control"/>
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Email</label>
@@ -85,7 +86,7 @@
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Nationality</label>
-                                                        <input  type="text"  name="country_id" value="{{ old('country_id') }}" class="form-control"  />
+                                                        <input  type="text"  name="nationality" value="{{ old('nationality') }}" class="form-control"  />
                                                     </div>
                                                     <div class="form-group">
                                                         <label class="control-label">State of Origin</label>
@@ -138,7 +139,7 @@
                                                         </div>
                                                     <div class="form-group">
                                                         <label class="control-label">Subject of Specialization</label>
-                                                        {!! Form::select('subject_of_specialisation',$subjects,old('subject_of_specialisation'),['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+                                                        {!! Form::select('subject_of_specialisation',$subjects,old('subject_of_specialisation'),['class' => 'form-control']) !!}
 
                                                     </div>
                                                     <div class="form-group">
@@ -156,7 +157,7 @@
                                                     <div class="form-group">
                                                         <label class="control-label col-sm-12 col_l">Date of 1st Appointment in Ogun State</label>
                                                         <div class="col-sm-12 col_l col_r">
-                                                            <input id="dp1" type="text" value="{{ old('appointment') }}" size="16" name="appointment" class="form-control">
+                                                            <input id="dp1" type="text" value="{{ old('appointment') }}"  name="appointment" class="form-control">
                                                         </div>
                                                     </div>
 
@@ -183,14 +184,14 @@
                                                         </thead>
                                                         <tbody class="table_append">
                                                         <tr class="first_data">
-                                                            <td><input type="text" class="form-control" name="school"></td>
-                                                            <td> {!! Form::select('subject_id[]',$subjects,"",['class' => 'form-control state_id','onchange' => 'getLocalGovt()']) !!}
+                                                            <td><input type="text" class="form-control" name="school_info[]"></td>
+                                                            <td> {!! Form::select('subject_id[]',$subjects,"",['class' => 'form-control']) !!}
                                                             </td>
                                                             <td><input type="text" class="form-control" name="designation[]"></td>
                                                             <td><input type="text" class="form-control" name="grade_level[]"></td>
-                                                            <td><input id="dp3" type="text" value="{{ old('appointment') }}" size="16" name="from[]" class="form-control">
+                                                            <td><input type="text"  name="from[]" onclick="activateDatetime()" class="form-control dp3">
                                                             </td>
-                                                            <td><input id="dp4" type="text" value="{{ old('appointment') }}" size="16" name="to[]" class="form-control">
+                                                            <td><input type="text"  name="to[]" class="form-control dp4">
                                                             </td>
 
                                                         </tr>
@@ -230,9 +231,17 @@
     <script src="{{ url('js/form-component.js') }}"></script>
     <script type="text/javascript">
         function cloneRow(){
-                var $table_data = $('.first_data').clone();
-                $('.table_append').append($table_data);
+            //using localstorage to save count number
+            var count = localStorage.getItem('count');
+            if(!count){
+                count = 6;
+                localStorage.setItem('count',6);
+            }
+                var $table_data = '<tr class="first_data'+count+'"> <td><input type="text" class="form-control" name="school_info[]"></td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
 
+            $('.table_append').append($table_data);
+                count++;
+            localStorage.setItem('count',count);
         }
         function getLocalGovt(){
                 var state_id = $('.state_id').val();
@@ -258,6 +267,12 @@
                     }
                 });
             }
+
+            function activateDatetime(class_name){
+               $("."+class_name).datepicker();
+            }
+
+
        </script>
 
 @stop
