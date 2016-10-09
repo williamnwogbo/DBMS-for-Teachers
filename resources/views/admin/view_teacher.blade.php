@@ -146,6 +146,9 @@
 
                                             <div class="row">
                                                 @if($teacher->professionals->count() > 0)
+                                                    <form action="{{ url('add/cordination') }}" method="post">
+
+                                                        <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
                                                     <table class="table table-bordered">
                                                         <thead>
                                                         <th>Name of School</th>
@@ -153,6 +156,7 @@
                                                         <th>Designation while in school</th>
                                                         <th>Last Grade Level in School</th>
                                                         <th colspan="2">Date Posted</th>
+                                                        <th colspan="2">Action</th>
                                                         </thead>
                                                         <tbody class="table_append">
                                                         <!- we habe to add the same proportion of data that was save->
@@ -169,15 +173,19 @@
                                                                     </td>
                                                                     <td><input type="text" value="{{ $coordination->to }}" name="to[]" class="form-control dp4">
                                                                     </td>
-
+                                                                    <td>
+                                                                        <a href="javascript:;" onclick="confirmDelete('/cordination/delete/{{ encrypt_decrypt('encrypt',$coordination->id) }}')"><i  class="icon_blocked"></i></a>
+                                                                    </td>
                                                                 </tr>
                                                             @endforeach
                                                         @endif
 
+
                                                         </tbody>
 
                                                     </table>
-
+                                                        <input type="submit" class=" btn btn-info pull-right"/>
+                                                    </form>
                                                 @else
                                                     <div class="alert alert-info">
                                                         No Cordination record was found
@@ -288,6 +296,20 @@
     <script src="{{ url('js/form-component.js') }}"></script>
 
     <script>
+        function cloneRow(){
+            //using localstorage to save count number
+            var count = localStorage.getItem('count');
+            if(!count){
+                count = 6;
+                localStorage.setItem('count',6);
+            }
+            var $table_data = '<tr class="first_data'+count+'"> <td><input type="text" class="form-control" name="school_info[]"></td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
+
+            $('.table_append').append($table_data);
+            count++;
+            localStorage.setItem('count',count);
+        }
+
         function openEdit(id,qualification,year,subject_of_specialisation,classification,post_held,appointment,last_promotion){
             $('.id').val(id);
             $('.qualification').val(qualification);
