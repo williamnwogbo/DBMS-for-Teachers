@@ -21,6 +21,8 @@ class TeacherRepository extends Repository
             'og_file_no'  => $data['og_file_no'],
             'date_of_birth' => Carbon::parse($data['date_of_birth'])->toDateString(),
             'email' => $data['email'],
+            'religion' => $data['religion'],
+            'gender' => $data['gender'],
             'phone_no' => $data['phone_no'],
             'nationality' => $data['nationality'],
             'state_id' => $data['state_id'],
@@ -32,12 +34,13 @@ class TeacherRepository extends Repository
 
         //next would be to update professional profile
         $professional_array = [
-            'qualification' => $data['qualification'],
+            'qualification_id' => $data['qualification_id'],
             'year'=> $data['year'],
             'subject_of_specialisation'=> $data['subject_of_specialisation'],
             'classifications'=> $data['classifications'],
             'post_held'=> $data['post_held'],
             'appointment'=> Carbon::parse($data['appointment'])->toDateString(),
+            'retirement'=> Carbon::parse($data['retirement'])->toDateString(),
             'last_promotion'=> Carbon::parse($data['last_promotion'])->toDateString(),
             'teacher_id'=> $data['teacher_id'],
         ];
@@ -48,7 +51,7 @@ class TeacherRepository extends Repository
             $i = 0;
             foreach ($data['school_info'] as $school) {
                 $school_data = [
-                    'school' => $school,
+                    'school_id' => $school,
                     'teacher_id' => $data['teacher_id'],
                     'from' => Carbon::parse($data['from'][$i])->toDateString(),
                     'to' => Carbon::parse($data['to'][$i])->toDateString(),

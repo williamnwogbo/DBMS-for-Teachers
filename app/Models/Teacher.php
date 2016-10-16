@@ -9,7 +9,7 @@ class Teacher extends Model {
      */
 
     protected $table = 'teachers';
-    protected $fillable = ['id', 'surname', 'othernames', 'title', 'tsc_file_no', 'og_file_no', 'date_of_birth', 'email', 'phone_no', 'nationality', 'state_id', 'local_govt_id', 'ward', 'professional_status', 'online_id'];
+    protected $fillable = ['id', 'surname', 'othernames','religion','gender', 'title', 'tsc_file_no', 'og_file_no', 'date_of_birth', 'email', 'phone_no', 'nationality', 'state_id', 'local_govt_id', 'ward', 'professional_status', 'online_id'];
 
 
     public function subjects() {

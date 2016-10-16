@@ -9,7 +9,7 @@ class Professional extends Model {
      */
 
     protected $table = 'professionals';
-    protected $fillable = ['id', 'qualification', 'year', 'subject_of_specialisation', 'classifications', 'post_held', 'retirement', 'appointment', 'last_promotion', 'teacher_id', 'uploaded', 'online_id'];
+    protected $fillable = ['id', 'qualification_id', 'year', 'subject_of_specialisation', 'classifications', 'post_held', 'retirement', 'appointment', 'last_promotion', 'teacher_id', 'uploaded', 'online_id'];
 
 
     public function subject() {
@@ -22,6 +22,10 @@ class Professional extends Model {
 
     public function teacher() {
         return $this->belongsTo(\App\Models\Teacher::class, 'teacher_id', 'id');
+    }
+
+    public function qualification() {
+        return $this->belongsTo(\App\Models\QualificationType::class, 'qualification_id', 'id');
     }
 
 

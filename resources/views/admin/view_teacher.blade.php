@@ -1,5 +1,7 @@
 @extends('layouts.admin')
-
+@section('style')
+    <link rel="stylesheet" type="text/css" href="{{ url('css/select2.min.css') }}" />
+@stop
 @section('content')
     <section id="main-content">
         <section class="wrapper">
@@ -13,9 +15,9 @@
                                 <p class="text-left">Email: {{ $teacher->email }}</p>
                                 <p class="text-left">Phone: {{ $teacher->phone }} </p>
                                 @if(auth()->user()->level == "1")
-                                {{ Form::open(['method' => 'DELETE','style'=>'float:right', 'route' => 'subject.delete', $teacher->id]) }}
+                                {{ Form::open(['method' => 'DELETE','style'=>'float:right', 'route' => 'teacher.delete', $teacher->id]) }}
                                 {{ Form::hidden('id', $teacher->id) }}
-                                {{ Form::submit('Delete', ['class' => 'text-left btn btn-danger btn-xs']) }}
+                                {{ Form::submit('Delete', ['class' => 'text-left btn btn-danger btn-xs deleteTeacher','style' => 'display:none' ]) }}
                                 {{ Form::close() }}
                                 @endif
                             </div>
@@ -78,6 +80,21 @@
                                                 <div class="bio-row">
                                                     <p><span>Ward </span>:  {{ $teacher->ward }}</p>
                                                 </div>
+                                                <div class="bio-row">
+                                                    <p><span>Gender </span>: @if($teacher->gender == "0")
+                                                                                 Male
+                                                    @else
+Female
+                                                        @endif
+                                                    </p>
+                                                </div>
+                                                <div class="bio-row">
+                                                    <p><span>Religion </span>:   @if($teacher->gender == "0")
+                                                            Christian
+                                                        @else
+                                                            Muslim
+                                                        @endif</p>
+                                                </div>
                                             </div>
                                         </div>
                                     </section>
@@ -93,7 +110,7 @@
                                         <div class="panel-body bio-graph-info">
                                             <h1>Professional Profile   @if(auth()->user()->level == "1")
                                                     <span class="pull-right">
-                                             <a href="#" data-toggle="modal" data-target="#addProfessional" class="pull-right btn btn-info"><i class="icon_plus"></i></a>
+                                             <a href="#" data-toggle="modal" data-target="#addProfessional" class="pull-right btn btn-primary"><i class="icon_plus"></i></a>
                                          </span>
                                             @endif</h1>
 
@@ -115,11 +132,19 @@
                                                     <tbody>
                                                         @foreach($teacher->professionals as $professional)
                                                             <tr>
-                                                                <td>{{ $professional->qualification }}</td>
-                                                                <td> {{ $professional->year }}</td>
-                                                                <td> {{ $professional->subject_spec->name }}</td>
                                                                 <td>
-                                                                    @if($professional->classification == "1")
+                                                                    @if($professional->qualification_id != "0")
+                                                                    {{ $professional->qualification->name }}
+                                                                        @endif
+                                                                </td>
+                                                                <td> {{ $professional->year }}</td>
+                                                                <td>
+                                                                    @if($professional->subject_of_specialisation)
+                                                                    {{ $professional->subject_spec->name }}
+                                                                @endif
+                                                                </td>
+                                                                <td>
+                                                                    @if($professional->classifications == "0")
                                                                             Teaching
                                                                         @else
                                                                             Non Teaching
@@ -129,7 +154,7 @@
                                                                 <td> {{ Carbon\Carbon::parse($professional->appointment)->format('d M Y') }}</td>
                                                                 <td> {{ Carbon\Carbon::parse($professional->last_promotion)->format('d M Y') }}</td>
                                                                 @if(auth()->user()->level == "1")
-                                                                <td><a href="#" onclick="openEdit('{{ $professional->id }}','{{ $professional->qualification }}','{{ $professional->year }}','{{  $professional->subject_of_specification }}','{{ $professional->classification }}','{{ $professional->post_held }}','{{ $professional->appointment }}','{{ $professional->last_promotion }}')"><i class="icon_pencil-edit"></i></a>
+                                                                <td><a href="#" onclick="openEdit('{{ $professional->id }}','{{ $professional->qualification }}','{{ $professional->year }}','{{  $professional->subject_of_specification }}','{{ $professional->classifications }}','{{ $professional->post_held }}','{{ $professional->appointment }}','{{ $professional->last_promotion }}','{{ $professional->retirement }}')"><i class="icon_pencil-edit"></i></a>
                                                                  <a style="margin-left: 5px;margin-top: 4px;" href="javascript:;" onclick="confirmDelete('/professional/delete/{{ encrypt_decrypt('encrypt',$professional->id) }}')">    <i class="icon_blocked"></i></a>
                                                                 </td>
                                                                     @endif
@@ -166,8 +191,8 @@
                                                         <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
                                                     <table class="table table-bordered">
                                                         <thead>
-                                                        <th>Name of School</th>
-                                                        <th style="width: 150px;">Subject</th>
+                                                        <th style="width: 200px;">Name of School</th>
+                                                        <th style="width: 200px;">Subject</th>
                                                         <th>Designation while in school</th>
                                                         <th>Last Grade Level in School</th>
                                                         <th colspan="2">Date Posted</th>
@@ -181,8 +206,10 @@
                                                             @foreach($teacher->coordination  as $coordination)
                                                                 <tr class="first_data">
                                                                     <input type="hidden" name="cordination_id[]" value="{{ $coordination->id }}"/>
-                                                                    <td><input type="text" value="{{ $coordination->school }}" class="form-control" name="school_info[]"></td>
-                                                                    <td> {!! Form::select('subject_id[]',$subjects,$coordination->subject_id,['class' => 'form-control']) !!}
+                                                                    <td>
+                                                                        {!! Form::select('school_info[]',$schools,$coordination->school_id,['class' => 'form-control','style' => 'width: 200px']) !!}
+</td>
+                                                                    <td> {!! Form::select('subject_id[]',$subjects,$coordination->subject_id,['class' => 'form-control','style' => 'width: 200px']) !!}
                                                                     </td>
                                                                     <td><input type="text" value="{{ $coordination->designation }}" class="form-control" name="designation[]"></td>
                                                                     <td><input type="text" value="{{ $coordination->grade_level }}" class="form-control" name="grade_level[]"></td>
@@ -241,20 +268,22 @@
                     <form action="{{ url('/edit/professional') }}" method="post">
                         <input type="hidden" class="id" name="professional_id"/>
                         <label>Qualification</label>
-                        <input type="text" name="qualification" class="qualification form-control"/>
+                        {!! Form::select('qualification_id',$qualifications,old('qualification_id'),['class' => 'qualification form-control','style' => 'width: 100%']) !!}
                         <label>Year</label>
                         <input type="text" name="year" class="year form-control"/>
                         <label>Subject of Specialisation</label>
-                        {!! Form::select('subject_of_specialisation',$subjects,'' ,['class' => 'form-control specialisation']) !!}
+                        {!! Form::select('subject_of_specialisation',$subjects,'' ,['class' => 'form-control specialisation','style' => 'width: 100%']) !!}
                         <label>Classification</label>
                         <?php
                         $classifications = ["" => 'Select Staff Classification','Teaching','Non Teaching'];
                         ?>
-                        {!! Form::select('classifications',$classifications,"",['class' => 'form-control classification']) !!}
+                        {!! Form::select('classifications',$classifications,"",['class' => 'form-control classification','style' => 'width: 100%']) !!}
                         <label>Position Held</label>
                         <input type="text" name="post_held" class="post_held form-control"/>
                         <label>Appointment</label>
                         <input type="text" name="appointment" class="appointment form-control" id="dp4"/>
+                        <label>Retirement</label>
+                        <input type="text" name="retirement" class="retirement form-control" id="dp9"/>
                         <label>Last Promotion</label>
                         <input type="text" name="last_promotion" class="last_promotion form-control" id="dp5"/>
                         <br/>
@@ -281,20 +310,22 @@
                     <form action="{{ url('/add/professional') }}" method="post">
                         <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
                         <label>Qualification</label>
-                        <input type="text" name="qualification" class="form-control"/>
+                        {!! Form::select('qualification_id',$qualifications,old('qualification_id'),['class' => 'qualification form-control','style' => 'width: 100%']) !!}
                         <label>Year</label>
                         <input type="text" name="year" class="form-control"/>
                         <label>Subject of Specialisation</label>
-                        {!! Form::select('subject_of_specialisation',$subjects,'' ,['class' => 'form-control']) !!}
+                        {!! Form::select('subject_of_specialisation',$subjects,'' ,['class' => 'form-control','style' => 'width: 100%']) !!}
                         <label>Classification</label>
                         <?php
                         $classifications = ["" => 'Select Staff Classification','Teaching','Non Teaching'];
                         ?>
-                        {!! Form::select('classifications',$classifications,"",['class' => 'form-control']) !!}
+                        {!! Form::select('classifications',$classifications,"",['class' => 'form-control','style' => 'width: 100%']) !!}
                         <label>Position Held</label>
                         <input type="text" name="post_held" class="form-control"/>
                         <label>Appointment</label>
                         <input type="text" name="appointment" class="form-control" id="dp7"/>
+                        <label>Retirement</label>
+                        <input type="text" name="retirement" class="form-control" id="dp2"/>
                         <label>Last Promotion</label>
                         <input type="text" name="last_promotion" class="form-control" id="dp8"/>
                         <br/>
@@ -325,23 +356,29 @@
                 count = 6;
                 localStorage.setItem('count',6);
             }
-            var $table_data = '<tr class="first_data'+count+'"> <td><input type="text" class="form-control" name="school_info[]"></td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
+            var $table_data = '<tr class="first_data'+count+'"> <td>{!! Form::select('school_info[]',$schools,"",['class' => 'form-control']) !!}</td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
 
             $('.table_append').append($table_data);
             count++;
             localStorage.setItem('count',count);
         }
 
-        function openEdit(id,qualification,year,subject_of_specialisation,classification,post_held,appointment,last_promotion){
+        function openEdit(id,qualification,year,subject_of_specialisation,classification,post_held,appointment,last_promotion,retirement){
             $('.id').val(id);
             $('.qualification').val(qualification);
             $('.year').val(year);
             $('.specialisation').val(subject_of_specialisation);
             $('.classification').val(classification);
+            console.log(classification);
             $('.post_held').val(post_held);
             $('.appointment').val(appointment);
+            $('.retirement').val(retirement);
             $('.last_promotion').val(last_promotion);
             $('#editProfessional').modal('toggle');
         }
+    </script>
+    <script src="{{ url('js/select2.full.js') }}"></script>
+    <script type="text/javascript">
+        $('select').select2();
     </script>
 @stop

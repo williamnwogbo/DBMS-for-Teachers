@@ -78,6 +78,20 @@
                                                     <input  type="text"  name="date_of_birth" id="dp5"  value="{{ $teacher->date_of_birth }}" class="form-control"/>
                                                 </div>
                                                 <div class="form-group">
+                                                    <label class="control-label">Gender</label>
+                                                    <?php
+                                                    $gender = ['male','female']
+                                                    ?>
+                                                    {!! Form::select('gender',$gender,$teacher->gender,['class' => 'form-control']) !!}
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label">Religion</label>
+                                                    <?php
+                                                    $religion = ['Christian','Muslim']
+                                                    ?>
+                                                    {!! Form::select('religion',$religion,$teacher->religion,['class' => 'form-control']) !!}
+                                                </div>
+                                                <div class="form-group">
                                                     <label class="control-label">Email</label>
                                                     <input  type="text"  name="email" value="{{ $teacher->email }}" class="form-control"  />
                                                 </div>
@@ -129,8 +143,8 @@
                                                         <div class="form-group">
                                                             <label class="control-label">Qualification</label>
                                                             <input type="hidden" name="professional_id" value="{{ ($teacher->professionals->count() > 0)? $teacher->professionals[0]->id :"" }}"/>
-                                                            <input name="qualification" type="text" value="{{ ($teacher->professionals->count() > 0)? $teacher->professionals[0]->qualification : ""  }}"    class="form-control"  />
-                                                        </div>
+                                                            {!! Form::select('qualification_id',$qualifications,(($teacher->professionals->count() > 0)? $teacher->professionals[0]->qualification : "") ,['class' => 'form-control']) !!}
+         </div>
                                                     </div>
                                                     <div class="col-md-4 col_r">
                                                         <div class="form-group">
@@ -167,6 +181,13 @@
                                                 </div>
 
                                                 <div class="form-group">
+                                                    <label class="control-label col-sm-12 col_l">Date of Retirement </label>
+                                                    <div class="col-sm-12 col_l col_r">
+                                                        <input id="dp9" type="text" value="{{ ($teacher->professionals->count() > 0) ? $teacher->professionals[0]->retirement : "" }}"  name="retirement" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
                                                     <label class="control-label">Date of Last Promotion</label>
                                                     <input type="text" value="{{ ($teacher->professionals->count() > 0) ? $teacher->professionals[0]->last_promotion : "" }}" id="dp2" name="last_promotion" class="form-control "/>
                                                 </div>
@@ -193,7 +214,11 @@
                                                         @foreach($teacher->coordination  as $coordination)
                                                             <tr class="first_data">
                                                                 <input type="hidden" name="cordination_id[]" value="{{ $coordination->id }}"/>
-                                                                <td><input type="text" value="{{ $coordination->school }}" class="form-control" name="school_info[]"></td>
+                                                                <td>
+
+                                                                    {!! Form::select('school_info[]',$schools,$coordination->school,['class' => 'form-control']) !!}
+
+                                                                </td>
                                                                 <td> {!! Form::select('subject_id[]',$subjects,$coordination->subject_id,['class' => 'form-control']) !!}
                                                                 </td>
                                                                 <td><input type="text" value="{{ $coordination->designation }}" class="form-control" name="designation[]"></td>
@@ -275,7 +300,7 @@
                 count = 6;
                 localStorage.setItem('count',6);
             }
-            var $table_data = '<tr class="first_data'+count+'"> <td><input type="text" class="form-control" name="school_info[]"></td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
+            var $table_data = '<tr class="first_data'+count+'"> <td> {!! Form::select('school_info[]',$schools,"",['class' => 'form-control']) !!}</td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
 
             $('.table_append').append($table_data);
             count++;

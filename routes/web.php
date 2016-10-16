@@ -42,6 +42,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::delete('/subject/add', ['as' => 'subject.delete',
         'uses' => 'AdminController@destroySubject']);
-
 });
+
+Route::delete('/teacher/add', ['as' => 'teacher.delete','uses' => 'AdminController@destroyTeacher']);
 

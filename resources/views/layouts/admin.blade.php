@@ -45,14 +45,12 @@
         </div>
 
         <!--logo start-->
-        <a href="{{ url('/dashboard') }}" class="logo">{{ settings()->name}}</a>
+        <a href="{{ url('/dashboard') }}" class="logo">
+            <img src="{{ url('/img/ogun.jpg') }}" class="text-center" style="height: 50px; margin-top: -10px;"/>
+            {{ settings()->name}}</a>
         <!--logo end-->
 
-        <div class="nav search-row" id="top_menu">
-            <!--  search form start -->
 
-            <!--  search form end -->
-        </div>
         <div class="top-nav notification-row">
             <!-- notificatoin dropdown start-->
             <ul class="nav pull-right top-menu">

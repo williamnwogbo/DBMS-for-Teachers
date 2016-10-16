@@ -87,6 +87,7 @@ var Script = function () {
         $('#dp2').datepicker();
         $('#dp7').datepicker();
         $('#dp8').datepicker();
+        $('#dp9').datepicker();
         $('.dp3').datepicker();
         $('.dp4').datepicker();
         $('.dp5').datepicker();

@@ -4,7 +4,8 @@
     <link rel="stylesheet" type="text/css" href="{{ url('assets/bootstrap-datepicker/css/datepicker.css') }}" />
     <!-- date range picker -->
     <link rel="stylesheet" type="text/css" href="{{ url('assets/bootstrap-daterangepicker/daterangepicker.css') }}" />
-    @stop
+    <link rel="stylesheet" type="text/css" href="{{ url('css/select2.min.css') }}" />
+@stop
 
 @section('content')
 
@@ -77,6 +78,20 @@
                                                         <input  type="text"  name="date_of_birth" id="dp5"  value="{{ old('date_of_birth') }}" class="form-control"/>
                                                     </div>
                                                     <div class="form-group">
+                                                        <label class="control-label">Gender</label>
+                                                        <?php
+                                                        $gender = ['Male','Female']
+                                                        ?>
+                                                        {!! Form::select('gender',$gender,old('gender'),['class' => 'form-control']) !!}
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">Religion</label>
+                                                        <?php
+                                                        $religion = ['Christian','Muslim']
+                                                        ?>
+                                                        {!! Form::select('religion',$religion,old('religion'),['class' => 'form-control']) !!}
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="control-label">Email</label>
                                                         <input  type="text"  name="email" value="{{ old('email') }}" class="form-control"  />
                                                     </div>
@@ -126,7 +141,7 @@
                                                     <div class="col-md-4">
                                                         <div class="form-group">
                                                             <label class="control-label">Qualification</label>
-                                                            <input name="qualification" type="text" value="{{ old('qualification') }}"    class="form-control"  />
+                                                            {!! Form::select('qualification_id',$qualifications,old('qualification_id'),['class' => 'form-control']) !!}
                                                         </div>
                                                     </div>
                                                         <div class="col-md-4 col_r">
@@ -162,6 +177,13 @@
                                                     </div>
 
                                                     <div class="form-group">
+                                                        <label class="control-label col-sm-12 col_l"> Date of Retirement </label>
+                                                        <div class="col-sm-12 col_l col_r">
+                                                            <input id="dp4" type="text" value="{{ old('retirement') }}"  name="appointment" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
                                                         <label class="control-label">Date of Last Promotion</label>
                                                         <input type="text" value="{{ old('last_promotion') }}" id="dp2" name="last_promotion" class="form-control "/>
                                                     </div>
@@ -171,20 +193,24 @@
                                             </div>
                                         </div>
                                         <div class="row setup-content" id="step-3">
-                                            <div class="col-xs-6 col-md-offset-2 form-change">
+                                            <div class="col-xs-10 col-md-offset-1 ">
                                                 <div class="col-md-12">
                                                     <h3>COORDINATION: <a href="javascript:;" onclick="cloneRow()" class="btn btn-primary pull-right"><i class="icon icon_plus"></i></a></h3>
                                                     <table class="table table-bordered">
                                                         <thead>
-                                                        <th>Name of School</th>
-                                                        <th style="width: 150px;">Subject</th>
+                                                        <th style="width: 200px">Name of School</th>
+                                                        <th style="width: 200px;">Subject</th>
                                                         <th>Designation while in school</th>
                                                         <th>Last Grade Level in School</th>
                                                         <th colspan="2">Date Posted</th>
                                                         </thead>
                                                         <tbody class="table_append">
                                                         <tr class="first_data">
-                                                            <td><input type="text" class="form-control" name="school_info[]"></td>
+                                                            <td>
+
+                                                                {!! Form::select('school_info[]',$schools,"",['class' => 'form-control']) !!}
+
+                                                            </td>
                                                             <td> {!! Form::select('subject_id[]',$subjects,"",['class' => 'form-control']) !!}
                                                             </td>
                                                             <td><input type="text" class="form-control" name="designation[]"></td>
@@ -237,7 +263,7 @@
                 count = 6;
                 localStorage.setItem('count',6);
             }
-                var $table_data = '<tr class="first_data'+count+'"> <td><input type="text" class="form-control" name="school_info[]"></td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
+                var $table_data = '<tr class="first_data'+count+'"> <td>{!! Form::select('school_info[]',$schools,"",['class' => 'form-control']) !!}</td><td>{!! Form::select('subject_id[]',$subjects,"",['class'=> 'form-control']) !!}</td><td><input type="text" class="form-control" name="designation[]"></td><td><input type="text" class="form-control" name="grade_level[]"></td><td><input type="text" name="from[]" onclick="activateDatetime(\'dp'+count+'\')" class="form-control dp'+count+'"> </td><td><input type="text" name="to[]" onclick="activateDatetime(\'dpr'+count+'\')" class="form-control dpr'+count+'"> </td></tr>';
 
             $('.table_append').append($table_data);
                 count++;
@@ -271,8 +297,9 @@
             function activateDatetime(class_name){
                $("."+class_name).datepicker();
             }
-
-
        </script>
-
+    <script src="{{ url('js/select2.full.js') }}"></script>
+    <script type="text/javascript">
+        $('select').select2();
+    </script>
 @stop

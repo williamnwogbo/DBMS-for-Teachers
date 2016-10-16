@@ -24,7 +24,7 @@ class EditProfessional extends FormRequest
     public function rules()
     {
         return [
-            'qualification' => 'required',
+            'qualification_id' => 'required',
             'year' => 'required',
             'subject_of_specialisation' => 'required',
             'classifications' => 'required',
