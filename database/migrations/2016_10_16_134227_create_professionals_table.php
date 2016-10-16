@@ -15,10 +15,9 @@ class CreateProfessionalsTable extends Migration {
 		Schema::create('professionals', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->text('qualification', 65535)->nullable();
+			$table->integer('qualification_id')->nullable();
 			$table->string('year', 6)->nullable();
 			$table->integer('subject_of_specialisation')->nullable();
-			$table->integer('subject_id')->nullable()->index('fk_professionals_1_idx');
 			$table->enum('classifications', array('0','1'))->nullable();
 			$table->string('post_held', 45)->nullable();
 			$table->string('retirement', 45)->nullable();

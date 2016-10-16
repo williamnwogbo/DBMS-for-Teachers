@@ -14,7 +14,6 @@ class AddForeignKeysToProfessionalsTable extends Migration {
 	{
 		Schema::table('professionals', function(Blueprint $table)
 		{
-			$table->foreign('subject_id', 'fk_professionals_1')->references('id')->on('subjects')->onUpdate('CASCADE')->onDelete('NO ACTION');
 			$table->foreign('teacher_id', 'fk_professionals_2')->references('id')->on('teachers')->onUpdate('CASCADE')->onDelete('NO ACTION');
 		});
 	}
@@ -29,7 +28,6 @@ class AddForeignKeysToProfessionalsTable extends Migration {
 	{
 		Schema::table('professionals', function(Blueprint $table)
 		{
-			$table->dropForeign('fk_professionals_1');
 			$table->dropForeign('fk_professionals_2');
 		});
 	}

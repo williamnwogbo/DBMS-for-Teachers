@@ -18,7 +18,7 @@ class CreateSchoolCordinationsTable extends Migration {
 			$table->integer('state_id')->nullable()->index('fk_school_cordinations_2_idx');
 			$table->integer('subject_id')->nullable()->index('fk_school_cordinations_1_idx');
 			$table->integer('teacher_id')->nullable()->index('fk_school_cordinations_2_idx1');
-			$table->text('school', 65535)->nullable();
+			$table->integer('school_id')->nullable()->index('fk_school_id_idx');
 			$table->date('from')->nullable();
 			$table->date('to')->nullable();
 			$table->string('designation')->nullable();
